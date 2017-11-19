@@ -16,14 +16,7 @@
         <property name="ignoreUnresolvablePlaceholders" value="false"/>
     </bean>
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:environment.properties</value>
-            </list>
-        </property>
-        <property name="ignoreUnresolvablePlaceholders" value="false"/>
-    </bean>
+
 
     <bean name="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
 

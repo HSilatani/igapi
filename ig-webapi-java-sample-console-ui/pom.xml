@@ -16,7 +16,7 @@
    <artifactId>ig-webapi-java-sample-console-ui</artifactId>
 
    <properties>
-      <spring-boot.version>1.4.0.RELEASE</spring-boot.version>
+      <spring-boot.version>1.5.8.RELEASE</spring-boot.version>
    </properties>
 
    <dependencyManagement>
@@ -71,7 +71,7 @@
       <dependency>
          <groupId>ch.qos.logback</groupId>
          <artifactId>logback-classic</artifactId>
-         <version>1.1.7</version>
+         <!--<version>1.1.7</version>-->
       </dependency>
 
        <dependency>
@@ -83,22 +83,7 @@
    </dependencies>
 
    <build>
-      <pluginManagement>
-         <plugins>
-            <plugin>
-               <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-               <artifactId>svn-revision-number-maven-plugin</artifactId>
-               <version>1.13</version>
-               <dependencies>
-                  <dependency>
-                     <groupId>org.tmatesoft.svnkit</groupId>
-                     <artifactId>svnkit</artifactId>
-                     <version>1.8.5</version>
-                  </dependency>
-               </dependencies>
-            </plugin>
-         </plugins>
-      </pluginManagement>
+
 
       <plugins>
          <!-- Create a spring boot executable app -->
