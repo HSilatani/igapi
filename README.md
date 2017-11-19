@@ -1,7 +1,7 @@
 ## IG Web API Java Sample
 [![Build Status](https://travis-ci.org/IG-Group/ig-webapi-java-sample.svg?branch=master)](https://travis-ci.org/IG-Group/ig-webapi-java-sample)
 
-### Overview
+###  Overview
 This repository contains two simple Java console sample applications which access the IG REST and Streaming APIs:
 
 1) **ig-webapi-java-sample-console**: A basic console based application which logs in via /session V2, retrieves a list of position, watchlist, subscribes to lightstreamer and create a position.
