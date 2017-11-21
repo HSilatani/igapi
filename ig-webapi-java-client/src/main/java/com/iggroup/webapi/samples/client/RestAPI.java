@@ -87,13 +87,35 @@ import org.springframework.stereotype.Service;
 import org.apache.http.HttpResponse;
 import java.util.Arrays;
 
+import org.apache.http.client.HttpClient;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Service
 public class RestAPI extends AbstractService {
 
+
+
 @Autowired
 AuthenticationService authenticationService;
+
+public RestAPI(
+                                ObjectMapper objectMapper,
+                                RestTemplate restTemplate,
+                                HttpClient httpClient,
+                                String igApiDomainURLi,
+                                boolean igApiDarkCluster,
+                                String igApiDarkClusterQueryParameter){
+
+      super(objectMapper,restTemplate,httpClient,
+              igApiDomainURLi,igApiDarkCluster, igApiDarkClusterQueryParameter );
+
+}
+public void setAuthenticationService(AuthenticationService authenticationService) {
+    this.authenticationService = authenticationService;
+}
+
 
 public AuthenticationResponseAndConversationContext createSession(CreateSessionV2Request authenticationRequest, String apiKey, boolean encrypted) {
   return authenticationService.createSession(authenticationRequest, apiKey, encrypted);

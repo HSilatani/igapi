@@ -1,6 +1,7 @@
 package com.iggroup.webapi.samples.client.rest;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iggroup.webapi.samples.client.RestAPI;
 import com.iggroup.webapi.samples.client.rest.dto.session.createSessionV1.CreateSessionV1Request;
 import com.iggroup.webapi.samples.client.rest.dto.session.createSessionV2.CreateSessionV2Request;
@@ -14,12 +15,15 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.Cipher;
 import java.nio.charset.Charset;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import org.apache.http.client.HttpClient;
+
 
 @Service
 public class AuthenticationService extends AbstractService {
@@ -31,6 +35,19 @@ public class AuthenticationService extends AbstractService {
    @Autowired
    private RestAPI restApi;
 
+   public AuthenticationService(RestAPI prestApi,
+                                ObjectMapper objectMapper,
+                                RestTemplate restTemplate,
+                                HttpClient httpClient,
+                                String igApiDomainURLi,
+                                boolean igApiDarkCluster,
+                                String igApiDarkClusterQueryParameter){
+
+      super(objectMapper,restTemplate,httpClient,
+              igApiDomainURLi,igApiDarkCluster, igApiDarkClusterQueryParameter );
+      this.restApi= prestApi;
+
+   }
 
    public AuthenticationResponseAndConversationContext createSession(CreateSessionV1Request authenticationRequest, String apiKey) {
       final ResponseEntity<CreateSessionV2Response> responseEntity = authenticate(authenticationRequest, apiKey);

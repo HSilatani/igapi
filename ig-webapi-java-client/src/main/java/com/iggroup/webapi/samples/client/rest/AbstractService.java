@@ -39,6 +39,21 @@ public abstract class AbstractService {
 	@Value("${ig.api.dark.cluster.query.parameter:deal_cluster}")
 	private String igApiDarkClusterQueryParameter;
 
+	public AbstractService(     ObjectMapper pobjectMapper,
+                                RestTemplate prestTemplate,
+                                HttpClient phttpClient,
+                                String pigApiDomainURL,
+                                boolean pigApiDarkCluster,
+                                String pigApiDarkClusterQueryParameter) {
+		objectMapper=pobjectMapper;
+		restTemplate=prestTemplate;
+		httpClient=phttpClient;
+		igApiDomainURL=pigApiDomainURL;
+		igApiDarkCluster=pigApiDarkCluster;
+		igApiDarkClusterQueryParameter=
+				(null!=pigApiDarkClusterQueryParameter)?pigApiDarkClusterQueryParameter:"deal_cluster";
+
+	}
 	public String getIGApiDomainURL() {
 		return igApiDomainURL;
 	}
