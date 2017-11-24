@@ -1,5 +1,6 @@
 package com.dario.agenttrader;
 
+import com.iggroup.webapi.samples.PropertiesUtil;
 import com.iggroup.webapi.samples.client.RestAPI;
 import com.iggroup.webapi.samples.client.StreamingAPI;
 import com.iggroup.webapi.samples.client.rest.AuthenticationResponseAndConversationContext;
@@ -27,14 +28,23 @@ import com.lightstreamer.ls_client.UpdateInfo;
 
 
 import java.util.ArrayList;
+import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class IGClient {
+    private static IGClient OneAndOnlyIGClient = new IGClient();
+
+    public static IGClient getInstance(){
+        return OneAndOnlyIGClient;
+    }
 
     private static final Logger LOG = LoggerFactory.getLogger(IGClient.class);
+    public static final String IDENTIFIER = "identifier";
+    public static final String PASSWORD = "password";
+    public static final String API_KEY = "apiKey";
 
     private Calculator cal = new Calculator();
 
@@ -48,14 +58,25 @@ public class IGClient {
     private StreamingAPI streamingAPI;
     private RestAPI restAPI;
 
-    public IGClient(ApplicationBootStrapper abs) {
-        this.applicationBootStrapper = abs;
 
-        streamingAPI = applicationBootStrapper.streamingAPI();
-        restAPI = applicationBootStrapper.restAPI();
+
+    private IGClient(){
+        String[] args = new String[3];
+        args[0] = PropertiesUtil.getProperty(IDENTIFIER);
+        args[1] = PropertiesUtil.getProperty(PASSWORD);
+        args[2] = PropertiesUtil.getProperty(API_KEY);
+
+        this.applicationBootStrapper = new ApplicationBootStrapper(args);
+        init();
     }
 
-    void connect() throws Exception {
+    private void init() {
+        streamingAPI = applicationBootStrapper.streamingAPI();
+        restAPI = applicationBootStrapper.restAPI();
+
+    }
+
+    public void connect() throws Exception {
        String identifier = applicationBootStrapper.identifier();
        String password = applicationBootStrapper.password();
        String apiKey = applicationBootStrapper.apiKey();
@@ -76,19 +97,19 @@ public class IGClient {
                 authenticationContext.getLightstreamerEndpoint());
     }
 
-    void disconnect() throws Exception {
+    public void disconnect() throws Exception {
         unsubscribeAllLightstreamerListeners();
         streamingAPI.disconnect();
     }
 
-    void unsubscribeAllLightstreamerListeners() throws Exception {
+    public void unsubscribeAllLightstreamerListeners() throws Exception {
 
         for (HandyTableListenerAdapter listener : listeners) {
             streamingAPI.unsubscribe(listener.getSubscribedTableKey());
         }
     }
 
-    void subscribeToLighstreamerAccountUpdates() throws Exception {
+    public void subscribeToLighstreamerAccountUpdates() throws Exception {
 
         LOG.info("Subscribing to Lightstreamer account updates");
         listeners.add(streamingAPI
@@ -103,7 +124,9 @@ public class IGClient {
 
     }
     
-    public void listOpenPositions() throws Exception {
+    public String listOpenPositions() throws Exception {
+
+        StringJoiner positionsStr = new StringJoiner("\n");
 
         ConversationContext conversationContext = authenticationContext.getConversationContext();
         GetPositionsV2Response positionsResponse = restAPI.getPositionsV2(conversationContext);
@@ -111,12 +134,15 @@ public class IGClient {
       for (PositionsItem position : positionsResponse.getPositions()) {
          GetPricesByNumberOfPointsV2Response prices=restAPI.getPricesByNumberOfPointsV2(conversationContext
                  ,"1",position.getMarket().getEpic(),"MINUTE");
-         LOG.info(position.getMarket().getEpic() +
-                 ", " + position.getMarket().getExpiry() +
-                 ", " + position.getPosition().getDirection() +
-                 ", " + position.getPosition().getSize()+
-                 ":P&l = "+ cal.calPandL(position,prices));
+         StringJoiner positionStr = new StringJoiner(",","[","]");
+         positionStr.add(position.getMarket().getInstrumentName());
+         positionStr.add(""+position.getPosition().getDirection());
+         positionStr.add(""+position.getPosition().getSize());
+         positionStr.add(":P&l = "+ cal.calPandL(position,prices));
+         positionsStr.add(positionStr.toString());
       }
+      LOG.info(positionsStr.toString());
+      return positionsStr.toString();
 
    }
 

@@ -17,22 +17,9 @@
 
    <properties>
       <spring-boot.version>1.5.8.RELEASE</spring-boot.version>
+     <!-- The main class to start by executing java -jar -->
+      <start-class>com.dario.agenttrader.JBotApplication</start-class>
    </properties>
-
-   <dependencyManagement>
-      <dependencies>
-
-         <dependency>
-            <!-- Import dependency management from Spring Boot -->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-dependencies</artifactId>
-            <version>${spring-boot.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-
-      </dependencies>
-   </dependencyManagement>
 
    <dependencies>
 
@@ -41,13 +28,11 @@
          <artifactId>ig-webapi-java-client</artifactId>
          <version>${project.parent.version}</version>
       </dependency>
-
       <dependency>
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter</artifactId>
-         <version>${spring-boot.version}</version>
+         <groupId>me.ramswaroop.jbot</groupId>
+         <artifactId>jbot</artifactId>
+         <version>3.0.2</version>
       </dependency>
-
       <dependency>
          <groupId>org.apache.httpcomponents</groupId>
          <artifactId>httpclient</artifactId>
@@ -57,42 +42,14 @@
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-api</artifactId>
       </dependency>
-
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>jcl-over-slf4j</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>log4j-over-slf4j</artifactId>
-      </dependency>
-
       <dependency>
          <groupId>ch.qos.logback</groupId>
          <artifactId>logback-classic</artifactId>
-         <!--<version>1.1.7</version>-->
       </dependency>
 
    </dependencies>
 
    <build>
-      <!--<pluginManagement>-->
-         <!--<plugins>-->
-            <!--<plugin>-->
-               <!--<groupId>com.google.code.maven-svn-revision-number-plugin</groupId>-->
-               <!--<artifactId>svn-revision-number-maven-plugin</artifactId>-->
-               <!--<version>1.13</version>-->
-               <!--<dependencies>-->
-                  <!--<dependency>-->
-                     <!--<groupId>org.tmatesoft.svnkit</groupId>-->
-                     <!--<artifactId>svnkit</artifactId>-->
-                     <!--<version>1.8.5</version>-->
-                  <!--</dependency>-->
-               <!--</dependencies>-->
-            <!--</plugin>-->
-         <!--</plugins>-->
-      <!--</pluginManagement>-->
 
       <plugins>
          <!-- Create a spring boot executable app -->

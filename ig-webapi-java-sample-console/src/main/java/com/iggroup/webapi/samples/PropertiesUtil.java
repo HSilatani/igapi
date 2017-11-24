@@ -15,8 +15,8 @@ public class PropertiesUtil {
 
    private static Properties theProperties;
 
-   public static Properties getProperties() throws RuntimeException {
-      if (theProperties == null) {
+   static{
+       if (theProperties == null) {
          theProperties = new Properties();
 
          String filename = PROPERTY_FILENAME;
@@ -41,6 +41,10 @@ public class PropertiesUtil {
             }
          }
       }
+   }
+
+   public static Properties getProperties() throws RuntimeException {
+
 
       return theProperties;
    }
@@ -49,4 +53,7 @@ public class PropertiesUtil {
       return getProperties().getProperty(key);
    }
 
+   public static void addProperty(String key,String value){
+      theProperties.setProperty(key,value);
+   }
 }

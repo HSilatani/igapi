@@ -1,26 +1,30 @@
 package com.dario.agenttrader;
 
+import com.iggroup.webapi.samples.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Application {
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
-    private final com.dario.agenttrader.IGClient IGClient;
+    private IGClient igClient;
 
-    private ApplicationBootStrapper applicationBootStrapper;
-
-
-    protected Application(ApplicationBootStrapper abs){
-        applicationBootStrapper=abs;
-        IGClient = new IGClient(abs);
+    public Application(){
+        igClient = IGClient.getInstance();
     }
 
-    public static void main(String args[]){
+    public static void main(String[] args){
         LOG.info("Starting Dario Agent Trader...");
+        if (args.length < 2) {
+            LOG.error("Usage:- Application identifier password apikey");
+            System.exit(-1);
+        }
+        PropertiesUtil.addProperty(IGClient.IDENTIFIER,args[0]);
+        PropertiesUtil.addProperty(IGClient.PASSWORD,args[1]);
+        PropertiesUtil.addProperty(IGClient.API_KEY,args[2]);
 
-        ApplicationBootStrapper applicationBootStrapper = new ApplicationBootStrapper(args);
 
-        Application application = new Application(applicationBootStrapper);
+
+        Application application = new Application();
 
         try {
             application.run();
@@ -34,14 +38,14 @@ public class Application {
 
 
     public void run() throws Exception {
-        IGClient.connect();
+        igClient.connect();
 
-        IGClient.subscribeToLighstreamerAccountUpdates();
+        igClient.subscribeToLighstreamerAccountUpdates();
 
-        IGClient.listOpenPositions();
+        igClient.listOpenPositions();
 
        Thread.sleep(20000);
-        IGClient.disconnect();
+        igClient.disconnect();
     }
 
 
