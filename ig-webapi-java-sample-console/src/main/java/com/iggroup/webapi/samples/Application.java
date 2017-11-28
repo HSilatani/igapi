@@ -43,7 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p/>
  * Usage:- Application identifier password apikey
  */
-@SpringBootApplication
+//@SpringBootApplication
 public class Application implements CommandLineRunner {
 
    private static final Logger LOG = LoggerFactory.getLogger(Application.class);

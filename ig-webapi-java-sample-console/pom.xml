@@ -9,7 +9,7 @@
       <artifactId>ig-webapi-java</artifactId>
       <version>2.2.0-SNAPSHOT</version>
    </parent>
-
+   <packaging>war</packaging>
    <name>IG Web API Java Spring Boot Sample</name>
    <description>Spring Boot sample application for accessing the IG REST and Streaming APIs</description>
 
@@ -22,7 +22,11 @@
    </properties>
 
    <dependencies>
-
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-tomcat</artifactId>
+         <!--<scope>provided</scope>-->
+      </dependency>
       <dependency>
          <groupId>${project.parent.groupId}</groupId>
          <artifactId>ig-webapi-java-client</artifactId>
@@ -58,7 +62,16 @@
             <artifactId>spring-boot-maven-plugin</artifactId>
             <version>${spring-boot.version}</version>
          </plugin>
-
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.6</version>
+            <configuration>
+               <warSourceDirectory>src/main/webapp</warSourceDirectory>
+               <warName>IG</warName>
+               <failOnMissingWebXml>false</failOnMissingWebXml>
+            </configuration>
+         </plugin>
          <!-- Create samples app sources -->
          <plugin>
             <artifactId>maven-source-plugin</artifactId>

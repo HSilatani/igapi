@@ -5,6 +5,7 @@ import com.iggroup.webapi.samples.client.rest.dto.positions.getPositionsV2.Posit
 import com.iggroup.webapi.samples.client.rest.dto.prices.getPricesByNumberOfPointsV2.GetPricesByNumberOfPointsV2Response;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 public class Calculator {
 
@@ -17,7 +18,13 @@ public class Calculator {
 
         BigDecimal pAndL= priceDiff.multiply(size);
 
+
         return  pAndL;
+    }
+
+    public String calPandLString(PositionsItem position, GetPricesByNumberOfPointsV2Response prices) throws Exception {
+
+        return NumberFormat.getCurrencyInstance().format(calPandL(position,prices));
     }
 
     private BigDecimal calculatePriceDifference(Direction direction,

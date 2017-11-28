@@ -64,7 +64,8 @@ public class SlackBot extends Bot {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        reply(session, event, new Message(replyMessage));
+        Message message = new Message(replyMessage);
+        reply(session, event, message);
     }
 
     /**

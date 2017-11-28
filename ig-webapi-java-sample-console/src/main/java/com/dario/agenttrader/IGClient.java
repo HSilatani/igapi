@@ -126,19 +126,24 @@ public class IGClient {
     
     public String listOpenPositions() throws Exception {
 
-        StringJoiner positionsStr = new StringJoiner("\n");
-
+        StringJoiner positionsStr = new StringJoiner("\n\n");
+        positionsStr.add("Ammo amir");
         ConversationContext conversationContext = authenticationContext.getConversationContext();
         GetPositionsV2Response positionsResponse = restAPI.getPositionsV2(conversationContext);
-      LOG.info("Open positions: {}", positionsResponse.getPositions().size());
+      LOG.info("Open positions Amoo Amir: {}", positionsResponse.getPositions().size());
       for (PositionsItem position : positionsResponse.getPositions()) {
          GetPricesByNumberOfPointsV2Response prices=restAPI.getPricesByNumberOfPointsV2(conversationContext
                  ,"1",position.getMarket().getEpic(),"MINUTE");
-         StringJoiner positionStr = new StringJoiner(",","[","]");
-         positionStr.add(position.getMarket().getInstrumentName());
+
+         StringJoiner positionStr = new StringJoiner("|","","");
+         String name = position.getMarket().getInstrumentName();
+         positionStr.add(name.substring(0, Math.min(name.length(), 3)));
          positionStr.add(""+position.getPosition().getDirection());
          positionStr.add(""+position.getPosition().getSize());
-         positionStr.add(":P&l = "+ cal.calPandL(position,prices));
+         String pl = cal.calPandLString(position,prices);
+         int idx = pl.indexOf(45);
+         pl= ((idx>=0)?"#FF0000"+pl:pl);
+         positionStr.add(""+ pl);
          positionsStr.add(positionStr.toString());
       }
       LOG.info(positionsStr.toString());

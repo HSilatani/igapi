@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 public class PropertiesUtil {
 
@@ -41,6 +43,23 @@ public class PropertiesUtil {
             }
          }
       }
+
+      Map<String, String> env = System.getenv();
+       for (String envName : env.keySet()) {
+                   System.out.format("%s=%s%n",
+                           envName,
+                           env.get(envName));
+                   String value=env.get(envName);
+                   theProperties.setProperty(envName,value);
+       }
+       Set<String> systemPropNames=System.getProperties().stringPropertyNames();
+       for(String spname:systemPropNames){
+           String value=System.getProperty(spname);
+           System.out.format("%s=%s%n",spname,value);
+           theProperties.setProperty(spname,value);
+       }
+
+
    }
 
    public static Properties getProperties() throws RuntimeException {
